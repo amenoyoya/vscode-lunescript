@@ -1,6 +1,6 @@
 /// Hello world
 print("Hello, world.");
-function "a" // <= This line is error
+function "a" // <= Cannot call function with no (): => error
 
 let txt = "world";
 print( "Hello %s." (txt) )
@@ -96,20 +96,82 @@ enum TestEnum {
 }
 print( TestEnum.val0, val1, val2 ); // 0, 1, 2
 
-fn func(val: TestEnum) {
-    
+fn func(val: TestEnum): int /* TestEnum型と int型には互換性がある */ {
+    return val + 100;
 }
+func(unwrap TestEnum._from(val));
 
 enum TestEnum {
-  val0 = 10,
-  val1,
-  val2 = 20,
+    val0 = 10,
+    val1,
+    val2 = 20,
 }
 print( TestEnum.val0, TestEnum.val1, TestEnum.val2 ); // 10, 11, 20
 
 enum TestEnum {
-  val0 = "abc",
-  val1 = "def",
-  val2 = "ghi",
+    val0 = "abc",
+    val1 = "def",
+    val2 = "ghi",
 }
 print( TestEnum.val0, TestEnum.val1, TestEnum.val2 ); // abc def ghi
+
+/// Match
+class Hoge {
+    pri let val: int {pub};
+}
+
+alge Test {
+    Val1,
+    Val2( int ),
+    Val3( str ),
+    Val4( Hoge ),
+    Val5( int, str ),
+}
+
+fn func( test: Test ) {
+    match test {
+        case .Val1 {
+            print( test.$_txt );
+        }
+        case .Val2( x ) {
+            print( test.$_txt, x );
+        }
+        case .Val3( x ) {
+            print( test.$_txt, x );
+        }
+        case .Val4( x ) {
+            print( test.$_txt, x.$val );
+        }
+        case .Val5( x, y ) {
+            print( test.$_txt, x, y );
+        }
+    }
+}
+
+func( Test.Val1 ); // Test.Val1
+func( Test.Val2( 1 ) ); // Test.Val2 1
+func( Test.Val3( "abc" ) ); // Test.Val3 abc
+func( Test.Val4( new Hoge( 100 ) ) ); // Test.Val4  100
+func( Test.Val5( 10, "xyz" ) ); // Test.Val5 10 xyz
+
+/// Class
+class Test {
+    fn func() {
+        print( __func__ );
+    }
+    pub fn sub() {
+        self.func();
+    }
+}
+let test = new Test();
+test.sub();  // Test.func
+
+// 分離定義
+class Test2 extends Test {
+}
+fn Test2.func() {
+    print("I'm Test2");
+}
+
+let test2 = new Test();
+test2.sub(); // Test2.func: => "I'm Test2"
