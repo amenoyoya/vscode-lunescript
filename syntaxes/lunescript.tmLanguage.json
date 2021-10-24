@@ -1,0 +1,917 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "LuneScript",
+	"scopeName": "source.lns",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"comment": "Interpreted string literals",
+			"begin": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin"
+				}
+			},
+			"end": "\"",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end"
+				}
+			},
+			"name": "string.quoted.double",
+			"patterns": [
+				{
+					"include": "#string_escaped_char"
+				},
+				{
+					"include": "#string_placeholder"
+				}
+			]
+		},
+		{
+			"comment": "Interpreted string literals",
+			"begin": "'",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin"
+				}
+			},
+			"end": "'",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end"
+				}
+			},
+			"name": "string.quoted.single",
+			"patterns": [
+				{
+					"include": "#string_escaped_char"
+				},
+				{
+					"include": "#string_placeholder"
+				}
+			]
+		},
+		{
+			"comment": "Raw string literals",
+			"begin": "```",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin"
+				}
+			},
+			"end": "```",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end"
+				}
+			},
+			"name": "string.quoted.raw",
+			"patterns": [
+				{
+					"include": "#string_placeholder"
+				}
+			]
+		},
+		{
+			"comment": "Syntax error receiving channels",
+			"match": "<\\-([\\t ]+)chan\\b",
+			"captures": {
+				"1": {
+					"name": "invalid.illegal.receive-channel"
+				}
+			}
+		},
+		{
+			"comment": "Syntax error sending channels",
+			"match": "\\bchan([\\t ]+)<-",
+			"captures": {
+				"1": {
+					"name": "invalid.illegal.send-channel"
+				}
+			}
+		},
+		{
+			"comment": "Syntax error using slices",
+			"match": "\\[\\](\\s+)",
+			"captures": {
+				"1": {
+					"name": "invalid.illegal.slice"
+				}
+			}
+		},
+		{
+			"comment": "Syntax error numeric literals",
+			"match": "\\b0[0-7]*[89]\\d*\\b",
+			"name": "invalid.illegal.numeric"
+		},
+		{
+			"comment": "Built-in functions",
+			"match": "\\b(append|cap|close|complex|copy|delete|imag|len|make|new|panic|print|println|real|recover)\\b(?=\\()",
+			"name": "support.function.builtin"
+		},
+		{
+			"comment": "Function declarations",
+			"match": "^(\\bfn\\b)(?:\\s+(\\([^\\)]+\\)\\s+)?(\\w+)(?=\\())?",
+			"captures": {
+				"1": {
+					"name": "keyword.function"
+				},
+				"2": {
+					"patterns": [
+						{
+							"include": "#brackets"
+						},
+						{
+							"include": "#operators"
+						}
+					]
+				},
+				"3": {
+					"patterns": [
+						{
+							"match": "\\d\\w*",
+							"name": "invalid.illegal.identifier"
+						},
+						{
+							"match": "\\w+",
+							"name": "entity.name.function"
+						}
+					]
+				}
+			}
+		},
+		{
+			"include": "#rune_numerics"
+		},
+		{
+			"include": "#numeric_literals"
+		},
+		{
+			"comment": "Language constants",
+			"match": "\\b(true|false|nil|null)\\b",
+			"name": "constant.language"
+		},
+		{
+			"begin": "\\b(type)\\s+",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.type"
+				}
+			},
+			"end": "(?!\\G)",
+			"patterns": [
+				{
+					"match": "\\d\\w*",
+					"name": "invalid.illegal.identifier"
+				},
+				{
+					"match": "\\w+",
+					"name": "entity.name.type"
+				}
+			]
+		},
+		{
+			"match": "\\b(let)\\s+(mut\\s+)?([^;=]+)",
+			"captures": {
+				"1": {
+					"name": "keyword.let"
+				},
+				"2": {
+					"name": "keyword.mut"
+				},
+				"3": {
+					"patterns": [
+						{
+							"match": "(?!:\\s*)(\\w+)",
+							"name": "variable.other.identifier"
+						},
+						{
+							"match": ":\\s*(\\w+(<(\\w+,?)*>)?)",
+							"captures": {
+								"1": {
+									"name": "support.type.declation"
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"match": "\\b(class)\\s+(\\w+)",
+			"captures": {
+				"1": {
+					"name": "keyword.class"
+				},
+				"2": {
+					"name": "variable.other.identifier"
+				}
+			}
+		},
+		{
+			"match": "\\b(enum)\\s+(\\w+)",
+			"captures": {
+				"1": {
+					"name": "keyword.enum"
+				},
+				"2": {
+					"name": "variable.other.identifier"
+				}
+			}
+		},
+		{
+			"match": "\\b(alge)\\s+(\\w+)",
+			"captures": {
+				"1": {
+					"name": "keyword.alge"
+				},
+				"2": {
+					"name": "variable.other.identifier"
+				}
+			}
+		},
+		{
+			"comment": "Terminators",
+			"match": ";",
+			"name": "punctuation.terminator"
+		},
+		{
+			"include": "#brackets"
+		},
+		{
+			"include": "#delimiters"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#runes"
+		},
+		{
+			"include": "#storage_types"
+		}
+	],
+	"repository": {
+		"brackets": {
+			"patterns": [
+				{
+					"begin": "{",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.begin.bracket.curly"
+						}
+					},
+					"end": "}",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.end.bracket.curly"
+						}
+					},
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				},
+				{
+					"begin": "\\(",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.begin.bracket.round"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.end.bracket.round"
+						}
+					},
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				},
+				{
+					"match": "\\[|\\]",
+					"name": "punctuation.definition.bracket.square"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.block",
+					"begin": "(\\/\\*)",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.comment"
+						}
+					},
+					"end": "(\\*\\/)",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.comment"
+						}
+					}
+				},
+				{
+					"name": "comment.line.double-slash",
+					"begin": "(\\/\\/)",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.comment"
+						}
+					},
+					"end": "(?:\\n|$)"
+				}
+			]
+		},
+		"delimiters": {
+			"patterns": [
+				{
+					"match": ",",
+					"name": "punctuation.other.comma"
+				},
+				{
+					"match": "\\.(?!\\.\\.)",
+					"name": "punctuation.other.period"
+				},
+				{
+					"match": ":(?!=)",
+					"name": "punctuation.other.colon"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"comment": "Flow control keywords",
+					"match": "\\b(break|case|continue|default|unwrap|else|fallthrough|for|goto|if|range|return|select|switch)\\b",
+					"name": "keyword.control"
+				},
+				{
+					"match": "\\bconst\\b",
+					"name": "keyword.const"
+				},
+				{
+					"match": "\\bfn\\b",
+					"name": "keyword.function"
+				},
+				{
+					"match": "\\binterface\\b",
+					"name": "keyword.interface"
+				},
+				{
+					"match": "\\bList\\b",
+					"name": "keyword.list"
+				},
+				{
+					"match": "\\bMap\\b",
+					"name": "keyword.map"
+				},
+				{
+					"match": "\\bSet\\b",
+					"name": "keyword.set"
+				},
+				{
+					"match": "\\bLuaval\\b",
+					"name": "keyword.luaval"
+				}
+			]
+		},
+		"operators": {
+			"comment": "Note that the order here is very important!",
+			"patterns": [
+				{
+					"match": "(\\*|&)(?=\\w)",
+					"name": "keyword.operator.address"
+				},
+				{
+					"match": "<\\-",
+					"name": "keyword.operator.channel"
+				},
+				{
+					"match": "\\-\\-",
+					"name": "keyword.operator.decrement"
+				},
+				{
+					"match": "\\+\\+",
+					"name": "keyword.operator.increment"
+				},
+				{
+					"match": "(==|!=|<=|>=|<(?!<)|>(?!>))",
+					"name": "keyword.operator.comparison"
+				},
+				{
+					"match": "(&&|\\|\\||!)",
+					"name": "keyword.operator.logical"
+				},
+				{
+					"match": "(=|\\+=|\\-=|\\|=|\\^=|\\*=|/=|%=|<<=|>>=|&\\^=|&=)",
+					"name": "keyword.operator.assignment"
+				},
+				{
+					"match": "(\\+|\\-|\\*|/|%)",
+					"name": "keyword.operator.arithmetic"
+				},
+				{
+					"match": "(&(?!\\^)|\\||\\^|&\\^|\\|<<|\\|>>)",
+					"name": "keyword.operator.arithmetic.bitwise"
+				},
+				{
+					"match": "\\.\\.\\.",
+					"name": "keyword.operator.ellipsis"
+				}
+			]
+		},
+		"runes": {
+			"patterns": [
+				{
+					"begin": "'",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin"
+						}
+					},
+					"end": "'",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end"
+						}
+					},
+					"name": "string.quoted.rune",
+					"patterns": [
+						{
+							"match": "\\G(\\\\([0-7]{3}|[abfnrtv\\\\'\"]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})|.)(?=')",
+							"name": "constant.other.rune"
+						},
+						{
+							"match": "[^']+",
+							"name": "invalid.illegal.unknown-rune"
+						}
+					]
+				}
+			]
+		},
+		"storage_types": {
+			"patterns": [
+				{
+					"match": "\\bbool\\b",
+					"name": "storage.type.boolean"
+				},
+				{
+					"match": "\\b(real|int)\\b",
+					"name": "storage.type.numeric"
+				},
+				{
+					"match": "\\bstr\\b",
+					"name": "storage.type.string"
+				},
+				{
+					"match": "\\bstem\\b",
+					"name": "storage.type.stem"
+				}
+			]
+		},
+		"string_escaped_char": {
+			"patterns": [
+				{
+					"match": "\\\\([0-7]{3}|[abfnrtv\\\\'\"]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})",
+					"name": "constant.character.escape"
+				},
+				{
+					"match": "\\\\[^0-7xuUabfnrtv\\'\"]",
+					"name": "invalid.illegal.unknown-escape"
+				}
+			]
+		},
+		"string_placeholder": {
+			"patterns": [
+				{
+					"match": "%(\\[\\d+\\])?([\\+#\\-0\\x20]{,2}((\\d+|\\*)?(\\.?(\\d+|\\*|(\\[\\d+\\])\\*?)?(\\[\\d+\\])?)?))?[vT%tbcdoqxXUbeEfFgGspw]",
+					"name": "constant.other.placeholder"
+				}
+			]
+		},
+		"variables": {
+			"patterns": [
+				{
+					"match": "(\\w+(?:,\\s*\\w+)*)(\\s+(\\[(\\d*|\\.\\.\\.)\\])*\\*?(<-)?\\w+(?:\\.\\w+)?\\s*=.*)",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"match": "\\d\\w*",
+									"name": "invalid.illegal.identifier"
+								},
+								{
+									"match": "\\w+",
+									"name": "variable.other.declaration"
+								},
+								{
+									"include": "#delimiters"
+								}
+							]
+						},
+						"2": {
+							"patterns": [
+								{
+									"include": "$self"
+								}
+							]
+						}
+					}
+				},
+				{
+					"begin": "\\(",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.variables.begin.bracket.round"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.variables.end.bracket.round"
+						}
+					},
+					"patterns": [
+						{
+							"include": "$self"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				}
+			]
+		},
+		"rune_numerics": {
+			"patterns": [
+				{
+					"match": "\\?\\\\'",
+					"name": "constant.numeric"
+				},
+				{
+					"match": "\\?\\\\\"",
+					"name": "constant.numeric"
+				},
+				{
+					"match": "\\?[^\\\\]",
+					"name": "constant.numeric"
+				}
+			]
+		},
+		"numeric_literals": {
+			"match": "(?<!\\w)\\.?\\d(?:(?:[0-9a-zA-Z_\\.])|(?<=[eEpP])[+-])*",
+			"captures": {
+				"0": {
+					"patterns": [
+						{
+							"begin": "(?=.)",
+							"end": "(?:\\n|$)",
+							"patterns": [
+								{
+									"match": "(?:(?:(?:(?:(?:\\G(?=[0-9.])(?!0[xXbBoO])([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)((?:(?<=[0-9])\\.|\\.(?=[0-9])))([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)?(?:(?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)))?(i(?!\\w))?(?:\\n|$)|\\G(?=[0-9.])(?!0[xXbBoO])([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))|\\G((?:(?<=[0-9])\\.|\\.(?=[0-9])))([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?:(?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)))?(i(?!\\w))?(?:\\n|$))|(\\G0[xX])_?([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)((?:(?<=[0-9a-fA-F])\\.|\\.(?=[0-9a-fA-F])))([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)?(?<!_)([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))|(\\G0[xX])_?([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?<!_)([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))|(\\G0[xX])((?:(?<=[0-9a-fA-F])\\.|\\.(?=[0-9a-fA-F])))([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?<!_)([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))",
+									"captures": {
+										"1": {
+											"name": "constant.numeric.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"2": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"3": {
+											"name": "constant.numeric.decimal.point"
+										},
+										"4": {
+											"name": "constant.numeric.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"5": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"6": {
+											"name": "keyword.other.unit.exponent.decimal"
+										},
+										"7": {
+											"name": "keyword.operator.plus.exponent.decimal"
+										},
+										"8": {
+											"name": "keyword.operator.minus.exponent.decimal"
+										},
+										"9": {
+											"name": "constant.numeric.exponent.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"10": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"11": {
+											"name": "constant.numeric.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"12": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"13": {
+											"name": "keyword.other.unit.exponent.decimal"
+										},
+										"14": {
+											"name": "keyword.operator.plus.exponent.decimal"
+										},
+										"15": {
+											"name": "keyword.operator.minus.exponent.decimal"
+										},
+										"16": {
+											"name": "constant.numeric.exponent.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"17": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"18": {
+											"name": "constant.numeric.decimal.point"
+										},
+										"19": {
+											"name": "constant.numeric.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"20": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"21": {
+											"name": "keyword.other.unit.exponent.decimal"
+										},
+										"22": {
+											"name": "keyword.operator.plus.exponent.decimal"
+										},
+										"23": {
+											"name": "keyword.operator.minus.exponent.decimal"
+										},
+										"24": {
+											"name": "constant.numeric.exponent.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"25": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"26": {
+											"name": "keyword.other.unit.hexadecimal"
+										},
+										"27": {
+											"name": "constant.numeric.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"28": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"29": {
+											"name": "constant.numeric.hexadecimal"
+										},
+										"30": {
+											"name": "constant.numeric.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"31": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"32": {
+											"name": "keyword.other.unit.exponent.hexadecimal"
+										},
+										"33": {
+											"name": "keyword.operator.plus.exponent.hexadecimal"
+										},
+										"34": {
+											"name": "keyword.operator.minus.exponent.hexadecimal"
+										},
+										"35": {
+											"name": "constant.numeric.exponent.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"36": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"37": {
+											"name": "keyword.other.unit.hexadecimal"
+										},
+										"38": {
+											"name": "constant.numeric.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"39": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"40": {
+											"name": "keyword.other.unit.exponent.hexadecimal"
+										},
+										"41": {
+											"name": "keyword.operator.plus.exponent.hexadecimal"
+										},
+										"42": {
+											"name": "keyword.operator.minus.exponent.hexadecimal"
+										},
+										"43": {
+											"name": "constant.numeric.exponent.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"44": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"45": {
+											"name": "keyword.other.unit.hexadecimal"
+										},
+										"46": {
+											"name": "constant.numeric.hexadecimal"
+										},
+										"47": {
+											"name": "constant.numeric.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"48": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"49": {
+											"name": "keyword.other.unit.exponent.hexadecimal"
+										},
+										"50": {
+											"name": "keyword.operator.plus.exponent.hexadecimal"
+										},
+										"51": {
+											"name": "keyword.operator.minus.exponent.hexadecimal"
+										},
+										"52": {
+											"name": "constant.numeric.exponent.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"53": {
+											"name": "keyword.other.unit.imaginary"
+										}
+									}
+								},
+								{
+									"match": "(?:(?:(?:\\G(?=[0-9.])(?!0[xXbBoO])([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(i(?!\\w))?(?:\\n|$)|(\\G0[bB])_?([01](?:[01]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(i(?!\\w))?(?:\\n|$))|(\\G0[oO]?)_?((?:[0-7]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))+)(i(?!\\w))?(?:\\n|$))|(\\G0[xX])_?([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(i(?!\\w))?(?:\\n|$))",
+									"captures": {
+										"1": {
+											"name": "constant.numeric.decimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"2": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"3": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"4": {
+											"name": "keyword.other.unit.binary"
+										},
+										"5": {
+											"name": "constant.numeric.binary",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"6": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"7": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"8": {
+											"name": "keyword.other.unit.octal"
+										},
+										"9": {
+											"name": "constant.numeric.octal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"10": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"11": {
+											"name": "keyword.other.unit.imaginary"
+										},
+										"12": {
+											"name": "keyword.other.unit.hexadecimal"
+										},
+										"13": {
+											"name": "constant.numeric.hexadecimal",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric"
+												}
+											]
+										},
+										"14": {
+											"name": "punctuation.separator.constant.numeric"
+										},
+										"15": {
+											"name": "keyword.other.unit.imaginary"
+										}
+									}
+								},
+								{
+									"match": "(?:(?:[0-9a-zA-Z_\\.])|(?<=[eEpP])[+-])+",
+									"name": "invalid.illegal.constant.numeric"
+								}
+							]
+						}
+					]
+				}
+			}
+		}
+	}
+}

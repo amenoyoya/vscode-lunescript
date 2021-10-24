@@ -1,0 +1,115 @@
+/// Hello world
+print("Hello, world.");
+function "a" // <= This line is error
+
+let txt = "world";
+print( "Hello %s." (txt) )
+
+/// function
+fn add(val: int): int {
+    /*
+        unwrap <variable> default <value>
+        => <variable> or <value>
+    */
+    return 10 + unwrap val default 0;
+}
+print(add(1)); // 11
+print(add(nil)); // 10
+
+/// comment
+// ... : 一行コメント
+/* ... */
+/**
+ * 複数行コメント
+ */
+
+/// types
+let v = nil, null;        // nil
+let v: int = 1, ?A, 0x10; // integer
+let v: real = 0.0;        // real number
+
+let v: str = "abc", 'def', ```
+This is raw-string
+```;                       // string
+
+let v1: bool, v2: bool = true, false; // boolean
+let v: List = [1, 2, 3];   // value-list
+let v: Map = {"A": 1, "B": 100}; // key-value map
+let v: Set = (@ 1, 2, 3);  // value-set
+let v: Luaval = 1;         // raw lua value
+let v: stem = 0xABC;       // not-nil value
+
+/// rune
+// ? に続く文字コードを int型の値として取得可能
+print(?a, ?\', ?\"); // 0x61, 0x27, 0x22
+
+/// bit operation
+assert(1 & 3 == 1); // bit and
+assert(1 | 2 == 3); // bit or
+assert(1 ~ 3 == 2); // bit xor
+assert(1 |<< 2 == 4); // bit left shift
+assert(0x10 |>> 2 == 4); // bit right shift
+assert(~2 == 0xfffffffd); // bit not
+
+/// string
+let txt: str = "abc";
+print(txt[2]); // == ?b == 98
+print(#"abc"); // 3
+
+/// List
+let mut list: List<int> = []; // declare mutable list
+list.insert( 1 ); // [ 1 ]
+list.insert( 2 ); // [ 1, 2 ]
+list.insert( 3 ); // [ 1, 2, 3 ]
+list.remove(); // [ 1, 2 ]
+print( list[1] ); // 1
+
+/// Map
+let mut map: Map<str,int> = {}; // declare mutable map
+map[ "abc" ] = 1;
+map.def = 10;
+print(map.abc, map['def']); // 1, 10
+
+/// Set
+let mut obj = (@ 1, 2, 3, 4 ); // declare mutable set
+obj.add( 0 );  // 0 1 2 3 4
+obj.del( 2 );  // 0 1 3 4
+print( obj.has(1) );  // true
+print( obj.has(2) );  // false
+print( obj.len() );   // 4
+
+let obj2 = obj.clone(); // shallow copy
+
+let set1 = (@  1, 2, 3 );
+let set2 = (@  2, 3, 4 );
+let set3 = set1.clone().or(set2);   // 1 2 3 4
+let set4 = set1.clone().and(set2);  // 2 3 
+let set5 = set1.clone().sub(set2);  // 1
+
+/// Enum
+// types which can be used as enum
+// * int
+// * real
+// * str
+enum TestEnum {
+    val0, val1, val2
+}
+print( TestEnum.val0, val1, val2 ); // 0, 1, 2
+
+fn func(val: TestEnum) {
+    
+}
+
+enum TestEnum {
+  val0 = 10,
+  val1,
+  val2 = 20,
+}
+print( TestEnum.val0, TestEnum.val1, TestEnum.val2 ); // 10, 11, 20
+
+enum TestEnum {
+  val0 = "abc",
+  val1 = "def",
+  val2 = "ghi",
+}
+print( TestEnum.val0, TestEnum.val1, TestEnum.val2 ); // abc def ghi

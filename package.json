@@ -1,0 +1,26 @@
+{
+    "name": "vscode-lunescript",
+    "displayName": "LuneScript Syntax",
+    "description": "Provides LuneScript syntax for Visual Studio Code",
+    "version": "0.0.1",
+    "publisher": "amenoyoya",
+    "engines": {
+        "vscode": "^1.61.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "lunescript",
+            "aliases": ["LuneScript", "lunescript"],
+            "extensions": [".lns"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "lunescript",
+            "scopeName": "source.lns",
+            "path": "./syntaxes/lunescript.tmLanguage.json"
+        }]
+    }
+}
