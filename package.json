@@ -4,6 +4,9 @@
     "description": "Provides LuneScript syntax for Visual Studio Code",
     "version": "0.0.1",
     "publisher": "amenoyoya",
+    "repository": {
+        "url": "https://github.com/amenoyoya/vscode-lunescript"
+    },
     "engines": {
         "vscode": "^1.61.0"
     },
