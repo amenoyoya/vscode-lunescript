@@ -469,11 +469,11 @@
 			"patterns": [
 				{
 					"comment": "Flow control keywords",
-					"match": "\\b(break|case|continue|default|unwrap|else|fallthrough|for|goto|if|range|return|match|switch)\\b",
+					"match": "\\b(break|case|default|unwrap|when|if|else|elseif|for|while|apply|of|foreach|forsort|in|goto|return|match|switch|import|as)\\b",
 					"name": "keyword.control"
 				},
 				{
-					"match": "\\b(fn|const|List|Map|Set|Luaval|interface|class|enum|alge|extends|local|pub|pri|pro|mut|static|new|self|__init|__func__)\\b",
+					"match": "\\b(fn|const|List|Map|Set|Luaval|interface|class|enum|alge|extend|local|global|pub|pri|pro|mut|static|override|abstract|advertise|new|self|__init|__func__)\\b",
 					"name": "keyword.other"
 				}
 			]

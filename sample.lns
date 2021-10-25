@@ -145,6 +145,9 @@ fn func( test: Test ) {
         case .Val5( x, y ) {
             print( test.$_txt, x, y );
         }
+        default {
+            print("unknown");
+        }
     }
 }
 
@@ -153,6 +156,114 @@ func( Test.Val2( 1 ) ); // Test.Val2 1
 func( Test.Val3( "abc" ) ); // Test.Val3 abc
 func( Test.Val4( new Hoge( 100 ) ) ); // Test.Val4  100
 func( Test.Val5( 10, "xyz" ) ); // Test.Val5 10 xyz
+
+/// If
+let val = 1;
+if val == 1 {
+   print( "hoge" );
+}
+elseif val == 2 {
+   print( "foo" );
+}
+else {
+   print( "bar" );
+}
+
+/// While
+let mut val = 1;
+while val < 10 {
+    val = val + 1;
+}
+print( val ); // 10
+
+/// For
+// count up 1..10
+for count = 1, 100, 1 {
+    print( count );
+    if count == 10 {
+        break; // break this loop
+    }
+}
+
+// apply: Lua for-in 互換
+apply txt of string.gmatch( "hoge.foo.bar", '[^%.]+' ) {
+    print( txt );
+}
+
+// foreach
+foreach val, index in [ 1, 2, 3 ] {
+    print( index, val );
+}
+foreach val, index in [@ 10, 20, 30 ] {
+    print( index, val );
+}
+foreach val, key in { "a":100, "b":200, "c":300 } {
+    print( key, val );
+}
+foreach val in (@ 1, 2, 3 ) {
+    print( val );
+}
+
+// forsort: sort Set, Map & repeat
+// * 内部的に clone, sort を行うためオーバーヘッドが大きい
+forsort val, key in { "b":200, "c":300, "a":100 } {
+    print( key, val );
+}
+forsort val in (@ 2, 4, 1, 0 ) {
+    print( val );
+}
+
+
+/// Nilable
+// stem: nil 以外の全ての型
+// stem!: nil を含む全ての型 (!: nilable)
+let mut val:stem! = 1;
+val = 1.0;
+val = "abc";
+val = {};
+val = [];
+val = [@];
+val = nil; // ok
+
+let mut val1:int = 1;
+val1 = nil;  // error
+
+let mut val2:int! = 1;
+val2 = nil;  // ok
+
+// unwrap: nilable型を 非nilable型に変換
+let val1:int! = 1;
+print(val1 + 2); // error: nilable int と int の計算は不可
+print(unwrap val1 + 2); // ok: unwrap することで int 同士の計算が可能に
+
+// when!: 指定の nilable型の変数が nil かどうかを判定して分岐
+fn func( val:int!, val2:int! ): int {
+    when! val, val2 {
+        return val + val2;
+    }
+    else {
+        return 0;
+    }
+}
+print( func( 1, 2 ) );      // 3
+print( func( nil, 2 ) );    // 0
+print( func( 1, nil ) );    // 0
+print( func( nil, nil ) );  // 0
+
+// if!: 指定の式が nil かどうか判定して分岐
+fn func( val:int! ): int! {
+    return val;
+}
+fn sub( val:int! ): int {
+    if! func( val ) {
+        return _exp + 10;
+    } else {
+        return 0;
+    }
+}
+print( sub( 1 ) ); // 11
+print( sub( nil ) ); // 0
+
 
 /// Class
 class Test {
@@ -175,3 +286,53 @@ fn Test2.func() {
 
 let test2 = new Test();
 test2.sub(); // Test2.func: => "I'm Test2"
+
+// abstract class
+abstract class Test {
+   pub abstract fn foo(): str;
+   pub abstract fn bar(): str;
+}
+class TestSub1 extend Test {
+   pub override fn foo(): str {
+      return "foo";
+   }
+   pub override fn bar(): str {
+      return "bar";
+   }
+}
+class TestSub2 extend Test {
+   pri let sub:TestSub1;
+   advertise sub;
+   pub override fn bar(): str {
+      return "hoge" .. self.sub.bar();
+   }
+}
+fn func( test:Test ){
+   print( test.foo(), test.bar() );
+}
+func( new TestSub1() ); // foo, bar
+func( new TestSub2( new TestSub1() ) ); // foo, hogebar
+
+// override
+class Super {
+   pub fn func() {
+      print( __func__ );
+   }
+}
+class Sub extend Super {
+   pub override fn func() {
+      print( __func__ );
+   }
+}
+fn test( obj:Super ) {
+   obj.func();
+}
+test( new Super() ); // Super.func
+test( new Sub() ); // Sub.func
+
+/// import
+import Test;
+import work.Test as foo;
+
+print( Test.func() ); // @Test      Test.func
+print( foo.func() ); // work.Test   Test.func
