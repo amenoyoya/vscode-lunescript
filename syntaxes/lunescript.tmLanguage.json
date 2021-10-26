@@ -101,7 +101,7 @@
 		},
 		{
 			"comment": "Function declarations",
-			"begin": "(?<=\\bfn\\b)",
+			"begin": "(?<=\\b(fn|form)\\b)",
 			"end": "\\)(\\s*:\\s*[^{}]+)?",
 			"name": "function.signature",
 			"endCaptures": {
@@ -297,9 +297,35 @@
 				{
 					"comment": "First argument",
 					"begin": "(?<=\\()",
-					"end": "(?=:|\\))",
-					"name": "function.argument.teal",
+					"end": "(?=:|,|\\))",
 					"patterns": [
+						{
+							"match": "([^:\\(\\)]+)\\s*:\\s*([^:\\(\\)]+)",
+							"captures": {
+								"1": {
+									"name": "variable.other.function.argument"
+								},
+								"2": {
+									"patterns": [
+										{
+											"include": "#type"
+										}
+									]
+								}
+							}
+						},
+						{
+							"match": "([^:\\(\\)]+)",
+							"captures": {
+								"1": {
+									"patterns": [
+										{
+											"include": "#type"
+										}
+									]
+								}
+							}
+						},
 						{
 							"include": "#comments"
 						}
@@ -308,8 +334,8 @@
 				{
 					"comment": "Nth argument",
 					"begin": ",",
-					"end": "(?=:|\\))",
-					"name": "function.argument.teal",
+					"end": "(?=:|,|\\))",
+					"name": "variable.other.function.argument",
 					"patterns": [
 						{
 							"include": "#comments"
@@ -524,6 +550,10 @@
 				{
 					"match": "\\bstem\\b",
 					"name": "storage.type.stem"
+				},
+				{
+					"match": "\\bform\\b",
+					"name": "storage.type.form"
 				}
 			]
 		},

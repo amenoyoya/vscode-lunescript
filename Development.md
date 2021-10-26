@@ -56,8 +56,10 @@ $ code vscode-lunescript
     - `match` もしくは `begin` - `end` に正規表現を定義し、マッチングパターンを設定する
     - 複数のマッチングパターンが必要な場合は `patterns` 配列に記述する
     - `repository` 配下に記述したマッチングパターンは `"include": "#pattern-name"` で流用することができる
-- LuneScript は基本的な文法が Golang に近いため、公式の `go.tmLanguage.json` から改変しつつ作成
+- LuneScript の基本的な文法は Rust に近いが、Rust の Syntax highlight は複雑すぎるため Golang の `go.tmLanguage.json` から改変しつつ作成
     - https://raw.githubusercontent.com/microsoft/vscode/main/extensions/go/syntaxes/go.tmLanguage.json
+    - ※ Rust を基に作成したバージョン: [lunescript.rust.tmLanguage.json](./sytaxes/lunescript.rust.tmLanguage.json)
+        - https://raw.githubusercontent.com/microsoft/vscode/main/extensions/rust/syntaxes/rust.tmLanguage.json
 
 ### Debugging
 - プロジェクトを開いている VSCode で `F5` キーを押し、デバッグ用 VSCode を起動する

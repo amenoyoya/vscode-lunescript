@@ -1,0 +1,1165 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "LuneScript",
+	"scopeName": "source.lns",
+	"patterns": [
+		{
+			"comment": "boxed slice literal",
+			"begin": "(<)(\\[)",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.brackets.angle.lunescript"
+				},
+				"2": {
+					"name": "punctuation.brackets.square.lunescript"
+				}
+			},
+			"end": ">",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.brackets.angle.lunescript"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#block-comments"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#gtypes"
+				},
+				{
+					"include": "#lvariables"
+				},
+				{
+					"include": "#lifetimes"
+				},
+				{
+					"include": "#punctuation"
+				},
+				{
+					"include": "#types"
+				}
+			]
+		},
+		{
+			"comment": "macro type metavariables",
+			"name": "meta.macro.metavariable.type.lunescript",
+			"match": "(\\$)((crate)|([A-Z][A-Za-z0-9_]*))((:)(block|expr|ident|item|lifetime|literal|meta|path?|stmt|tt|ty|vis))?",
+			"captures": {
+				"1": {
+					"name": "keyword.operator.macro.dollar.lunescript"
+				},
+				"3": {
+					"name": "keyword.other.crate.lunescript"
+				},
+				"4": {
+					"name": "entity.name.type.metavariable.lunescript"
+				},
+				"6": {
+					"name": "keyword.operator.key-value.lunescript"
+				},
+				"7": {
+					"name": "variable.other.metavariable.specifier.lunescript"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#keywords"
+				}
+			]
+		},
+		{
+			"comment": "macro metavariables",
+			"name": "meta.macro.metavariable.lunescript",
+			"match": "(\\$)([a-z][A-Za-z0-9_]*)((:)(block|expr|ident|item|lifetime|literal|meta|path?|stmt|tt|ty|vis))?",
+			"captures": {
+				"1": {
+					"name": "keyword.operator.macro.dollar.lunescript"
+				},
+				"2": {
+					"name": "variable.other.metavariable.name.lunescript"
+				},
+				"4": {
+					"name": "keyword.operator.key-value.lunescript"
+				},
+				"5": {
+					"name": "variable.other.metavariable.specifier.lunescript"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#keywords"
+				}
+			]
+		},
+		{
+			"comment": "macro rules",
+			"name": "meta.macro.rules.lunescript",
+			"match": "\\b(macro_rules!)\\s+(([a-z0-9_]+)|([A-Z][a-z0-9_]*))\\s+(\\{)",
+			"captures": {
+				"1": {
+					"name": "entity.name.function.macro.rules.lunescript"
+				},
+				"3": {
+					"name": "entity.name.function.macro.lunescript"
+				},
+				"4": {
+					"name": "entity.name.type.macro.lunescript"
+				},
+				"5": {
+					"name": "punctuation.brackets.curly.lunescript"
+				}
+			}
+		},
+		{
+			"comment": "attributes",
+			"name": "meta.attribute.lunescript",
+			"begin": "(#)(\\!?)(\\[)",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.definition.attribute.lunescript"
+				},
+				"2": {
+					"name": "keyword.operator.attribute.inner.lunescript"
+				},
+				"3": {
+					"name": "punctuation.brackets.attribute.lunescript"
+				}
+			},
+			"end": "\\]",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.brackets.attribute.lunescript"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#block-comments"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#lifetimes"
+				},
+				{
+					"include": "#punctuation"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#gtypes"
+				},
+				{
+					"include": "#types"
+				}
+			]
+		},
+		{
+			"comment": "modules",
+			"match": "(mod)\\s+((?:r#(?!crate|[Ss]elf|super))?[a-z][A-Za-z0-9_]*)",
+			"captures": {
+				"1": {
+					"name": "storage.type.lunescript"
+				},
+				"2": {
+					"name": "entity.name.module.lunescript"
+				}
+			}
+		},
+		{
+			"comment": "external crate imports",
+			"name": "meta.import.lunescript",
+			"begin": "\\b(extern)\\s+(crate)",
+			"beginCaptures": {
+				"1": {
+					"name": "storage.type.lunescript"
+				},
+				"2": {
+					"name": "keyword.other.crate.lunescript"
+				}
+			},
+			"end": ";",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.semi.lunescript"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#block-comments"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#punctuation"
+				}
+			]
+		},
+		{
+			"comment": "use statements",
+			"name": "meta.use.lunescript",
+			"begin": "\\b(use)\\s",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.other.lunescript"
+				}
+			},
+			"end": ";",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.semi.lunescript"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#block-comments"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#namespaces"
+				},
+				{
+					"include": "#punctuation"
+				},
+				{
+					"include": "#types"
+				},
+				{
+					"include": "#lvariables"
+				}
+			]
+		},
+		{
+			"include": "#block-comments"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#lvariables"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#gtypes"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#lifetimes"
+		},
+		{
+			"include": "#macros"
+		},
+		{
+			"include": "#namespaces"
+		},
+		{
+			"include": "#punctuation"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#variables"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"comment": "documentation comments",
+					"name": "comment.line.documentation.lunescript",
+					"match": "^\\s*///.*"
+				},
+				{
+					"comment": "line comments",
+					"name": "comment.line.double-slash.lunescript",
+					"match": "\\s*//.*"
+				}
+			]
+		},
+		"block-comments": {
+			"patterns": [
+				{
+					"comment": "empty block comments",
+					"name": "comment.block.lunescript",
+					"match": "/\\*\\*/"
+				},
+				{
+					"comment": "block documentation comments",
+					"name": "comment.block.documentation.lunescript",
+					"begin": "/\\*\\*",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"include": "#block-comments"
+						}
+					]
+				},
+				{
+					"comment": "block comments",
+					"name": "comment.block.lunescript",
+					"begin": "/\\*(?!\\*)",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"include": "#block-comments"
+						}
+					]
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"comment": "ALL CAPS constants",
+					"name": "constant.other.caps.lunescript",
+					"match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
+				},
+				{
+					"comment": "constant declarations",
+					"match": "\\b(const)\\s+([A-Z][A-Za-z0-9_]*)\\b",
+					"captures": {
+						"1": {
+							"name": "storage.type.lunescript"
+						},
+						"2": {
+							"name": "constant.other.caps.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "decimal integers and floats",
+					"name": "constant.numeric.decimal.lunescript",
+					"match": "\\b\\d[\\d_]*(\\.?)[\\d_]*(?:(E)([+-])([\\d_]+))?(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b",
+					"captures": {
+						"1": {
+							"name": "punctuation.separator.dot.decimal.lunescript"
+						},
+						"2": {
+							"name": "keyword.operator.exponent.lunescript"
+						},
+						"3": {
+							"name": "keyword.operator.exponent.sign.lunescript"
+						},
+						"4": {
+							"name": "constant.numeric.decimal.exponent.mantissa.lunescript"
+						},
+						"5": {
+							"name": "entity.name.type.numeric.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "hexadecimal integers",
+					"name": "constant.numeric.hex.lunescript",
+					"match": "\\b0x[\\da-fA-F_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b",
+					"captures": {
+						"1": {
+							"name": "entity.name.type.numeric.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "octal integers",
+					"name": "constant.numeric.oct.lunescript",
+					"match": "\\b0o[0-7_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b",
+					"captures": {
+						"1": {
+							"name": "entity.name.type.numeric.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "binary integers",
+					"name": "constant.numeric.bin.lunescript",
+					"match": "\\b0b[01_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b",
+					"captures": {
+						"1": {
+							"name": "entity.name.type.numeric.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "booleans",
+					"name": "constant.language.bool.lunescript",
+					"match": "\\b(true|false)\\b"
+				}
+			]
+		},
+		"escapes": {
+			"comment": "escapes: ASCII, byte, Unicode, quote, regex",
+			"name": "constant.character.escape.lunescript",
+			"match": "(\\\\)(?:(?:(x[0-7][0-7a-fA-F])|(u(\\{)[\\da-fA-F]{4,6}(\\}))|.))",
+			"captures": {
+				"1": {
+					"name": "constant.character.escape.backslash.lunescript"
+				},
+				"2": {
+					"name": "constant.character.escape.bit.lunescript"
+				},
+				"3": {
+					"name": "constant.character.escape.unicode.lunescript"
+				},
+				"4": {
+					"name": "constant.character.escape.unicode.punctuation.lunescript"
+				},
+				"5": {
+					"name": "constant.character.escape.unicode.punctuation.lunescript"
+				}
+			}
+		},
+		"functions": {
+			"patterns": [
+				{
+					"comment": "pub as a function",
+					"match": "\\b(pub)(\\()",
+					"captures": {
+						"1": {
+							"name": "keyword.other.lunescript"
+						},
+						"2": {
+							"name": "punctuation.brackets.round.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "function definition",
+					"name": "meta.function.definition.lunescript",
+					"begin": "\\b(fn)\\s+((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)((\\()|(<))",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.other.fn.lunescript"
+						},
+						"2": {
+							"name": "entity.name.function.lunescript"
+						},
+						"4": {
+							"name": "punctuation.brackets.round.lunescript"
+						},
+						"5": {
+							"name": "punctuation.brackets.angle.lunescript"
+						}
+					},
+					"end": "\\{|;",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.curly.lunescript"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#block-comments"
+						},
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#lvariables"
+						},
+						{
+							"include": "#constants"
+						},
+						{
+							"include": "#gtypes"
+						},
+						{
+							"include": "#functions"
+						},
+						{
+							"include": "#lifetimes"
+						},
+						{
+							"include": "#macros"
+						},
+						{
+							"include": "#namespaces"
+						},
+						{
+							"include": "#punctuation"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				},
+				{
+					"comment": "function/method calls, chaining",
+					"name": "meta.function.call.lunescript",
+					"begin": "((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)(\\()",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.function.lunescript"
+						},
+						"2": {
+							"name": "punctuation.brackets.round.lunescript"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.round.lunescript"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#block-comments"
+						},
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#lvariables"
+						},
+						{
+							"include": "#constants"
+						},
+						{
+							"include": "#gtypes"
+						},
+						{
+							"include": "#functions"
+						},
+						{
+							"include": "#lifetimes"
+						},
+						{
+							"include": "#macros"
+						},
+						{
+							"include": "#namespaces"
+						},
+						{
+							"include": "#punctuation"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				},
+				{
+					"comment": "function/method calls with turbofish",
+					"name": "meta.function.call.lunescript",
+					"begin": "((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)(?=::<.*>\\()",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.function.lunescript"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.round.lunescript"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#block-comments"
+						},
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#lvariables"
+						},
+						{
+							"include": "#constants"
+						},
+						{
+							"include": "#gtypes"
+						},
+						{
+							"include": "#functions"
+						},
+						{
+							"include": "#lifetimes"
+						},
+						{
+							"include": "#macros"
+						},
+						{
+							"include": "#namespaces"
+						},
+						{
+							"include": "#punctuation"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"comment": "control flow keywords",
+					"name": "keyword.control.lunescript",
+					"match": "\\b(break|case|default|unwrap|when|if|else|elseif|for|while|apply|of|foreach|forsort|in|goto|return|match|switch|import|as)\\b"
+				},
+				{
+					"comment": "storage keywords",
+					"name": "keyword.other.lunescript storage.type.lunescript",
+					"match": "\\b(let|macro|fn|const|List|Map|Set|Luaval|interface|class|enum|alge|extend|local|global|pub|pri|pro|mut|static|override|abstract|advertise|new|self|__init|__func__)\\b"
+				},
+				{
+					"comment": "const keyword",
+					"name": "storage.modifier.lunescript",
+					"match": "\\b(const)\\b"
+				},
+				{
+					"comment": "type keyword",
+					"name": "keyword.declaration.type.lunescript storage.type.lunescript",
+					"match": "\\b(type)\\b"
+				},
+				{
+					"comment": "enum keyword",
+					"name": "keyword.declaration.enum.lunescript storage.type.lunescript",
+					"match": "\\b(enum)\\b"
+				},
+				{
+					"comment": "trait keyword",
+					"name": "keyword.declaration.trait.lunescript storage.type.lunescript",
+					"match": "\\b(trait)\\b"
+				},
+				{
+					"comment": "struct keyword",
+					"name": "keyword.declaration.struct.lunescript storage.type.lunescript",
+					"match": "\\b(struct)\\b"
+				},
+				{
+					"comment": "storage modifiers",
+					"name": "storage.modifier.lunescript",
+					"match": "\\b(abstract|static)\\b"
+				},
+				{
+					"comment": "other keywords",
+					"name": "keyword.other.lunescript",
+					"match": "\\b(as|async|become|box|dyn|move|final|impl|in|override|priv|pub|ref|typeof|union|unsafe|unsized|use|virtual|where)\\b"
+				},
+				{
+					"comment": "fn",
+					"name": "keyword.other.fn.lunescript",
+					"match": "\\bfn\\b"
+				},
+				{
+					"comment": "crate",
+					"name": "keyword.other.crate.lunescript",
+					"match": "\\bcrate\\b"
+				},
+				{
+					"comment": "mut",
+					"name": "storage.modifier.mut.lunescript",
+					"match": "\\bmut\\b"
+				},
+				{
+					"comment": "logical operators",
+					"name": "keyword.operator.logical.lunescript",
+					"match": "(\\^|\\||\\|\\||&&|<<|>>|!)(?!=)"
+				},
+				{
+					"comment": "logical AND, borrow references",
+					"name": "keyword.operator.borrow.and.lunescript",
+					"match": "&(?![&=])"
+				},
+				{
+					"comment": "assignment operators",
+					"name": "keyword.operator.assignment.lunescript",
+					"match": "(\\+=|-=|\\*=|/=|%=|\\^=|&=|\\|=|<<=|>>=)"
+				},
+				{
+					"comment": "single equal",
+					"name": "keyword.operator.assignment.equal.lunescript",
+					"match": "(?<![<>])=(?!=|>)"
+				},
+				{
+					"comment": "comparison operators",
+					"name": "keyword.operator.comparison.lunescript",
+					"match": "(=(=)?(?!>)|!=|<=|(?<!=)>=)"
+				},
+				{
+					"comment": "math operators",
+					"name": "keyword.operator.math.lunescript",
+					"match": "(([+%]|(\\*(?!\\w)))(?!=))|(-(?!>))|(/(?!/))"
+				},
+				{
+					"comment": "less than, greater than (special case)",
+					"match": "(?:\\b|(?:(\\))|(\\])|(\\})))[ \\t]+([<>])[ \\t]+(?:\\b|(?:(\\()|(\\[)|(\\{)))",
+					"captures": {
+						"1": {
+							"name": "punctuation.brackets.round.lunescript"
+						},
+						"2": {
+							"name": "punctuation.brackets.square.lunescript"
+						},
+						"3": {
+							"name": "punctuation.brackets.curly.lunescript"
+						},
+						"4": {
+							"name": "keyword.operator.comparison.lunescript"
+						},
+						"5": {
+							"name": "punctuation.brackets.round.lunescript"
+						},
+						"6": {
+							"name": "punctuation.brackets.square.lunescript"
+						},
+						"7": {
+							"name": "punctuation.brackets.curly.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "namespace operator",
+					"name": "keyword.operator.namespace.lunescript",
+					"match": "::"
+				},
+				{
+					"comment": "dereference asterisk",
+					"match": "(\\*)(?=\\w+)",
+					"captures": {
+						"1": {
+							"name": "keyword.operator.dereference.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "subpattern binding",
+					"name": "keyword.operator.subpattern.lunescript",
+					"match": "@"
+				},
+				{
+					"comment": "dot access",
+					"name": "keyword.operator.access.dot.lunescript",
+					"match": "\\.(?!\\.)"
+				},
+				{
+					"comment": "ranges, range patterns",
+					"name": "keyword.operator.range.lunescript",
+					"match": "\\.{2}(=|\\.)?"
+				},
+				{
+					"comment": "colon",
+					"name": "keyword.operator.key-value.lunescript",
+					"match": ":(?!:)"
+				},
+				{
+					"comment": "dashrocket, skinny arrow",
+					"name": "keyword.operator.arrow.skinny.lunescript",
+					"match": "->"
+				},
+				{
+					"comment": "hashrocket, fat arrow",
+					"name": "keyword.operator.arrow.fat.lunescript",
+					"match": "=>"
+				},
+				{
+					"comment": "dollar macros",
+					"name": "keyword.operator.macro.dollar.lunescript",
+					"match": "\\$"
+				}
+			]
+		},
+		"interpolations": {
+			"comment": "curly brace interpolations",
+			"name": "meta.interpolation.lunescript",
+			"match": "({)[^\"{}]*(})",
+			"captures": {
+				"1": {
+					"name": "punctuation.definition.interpolation.lunescript"
+				},
+				"2": {
+					"name": "punctuation.definition.interpolation.lunescript"
+				}
+			}
+		},
+		"lifetimes": {
+			"patterns": [
+				{
+					"comment": "named lifetime parameters",
+					"match": "(['])([a-zA-Z_][0-9a-zA-Z_]*)(?!['])\\b",
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.lifetime.lunescript"
+						},
+						"2": {
+							"name": "entity.name.type.lifetime.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "borrowing references to named lifetimes",
+					"match": "(\\&)(['])([a-zA-Z_][0-9a-zA-Z_]*)(?!['])\\b",
+					"captures": {
+						"1": {
+							"name": "keyword.operator.borrow.lunescript"
+						},
+						"2": {
+							"name": "punctuation.definition.lifetime.lunescript"
+						},
+						"3": {
+							"name": "entity.name.type.lifetime.lunescript"
+						}
+					}
+				}
+			]
+		},
+		"macros": {
+			"patterns": [
+				{
+					"comment": "macros",
+					"name": "meta.macro.lunescript",
+					"match": "(([a-z_][A-Za-z0-9_]*!)|([A-Z_][A-Za-z0-9_]*!))",
+					"captures": {
+						"2": {
+							"name": "entity.name.function.macro.lunescript"
+						},
+						"3": {
+							"name": "entity.name.type.macro.lunescript"
+						}
+					}
+				}
+			]
+		},
+		"namespaces": {
+			"patterns": [
+				{
+					"comment": "namespace (non-type, non-function path segment)",
+					"match": "(?<![A-Za-z0-9_])([a-z0-9_]+)((?<!super|self)::)",
+					"captures": {
+						"1": {
+							"name": "entity.name.namespace.lunescript"
+						},
+						"2": {
+							"name": "keyword.operator.namespace.lunescript"
+						}
+					}
+				}
+			]
+		},
+		"types": {
+			"patterns": [
+				{
+					"comment": "numeric types",
+					"match": "(?<![A-Za-z])(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)\\b",
+					"captures": {
+						"1": {
+							"name": "entity.name.type.numeric.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "parameterized types",
+					"begin": "\\b([A-Z][A-Za-z0-9]*)(<)",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.type.lunescript"
+						},
+						"2": {
+							"name": "punctuation.brackets.angle.lunescript"
+						}
+					},
+					"end": ">",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.angle.lunescript"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#block-comments"
+						},
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#lvariables"
+						},
+						{
+							"include": "#lifetimes"
+						},
+						{
+							"include": "#punctuation"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				},
+				{
+					"comment": "primitive types",
+					"name": "entity.name.type.primitive.lunescript",
+					"match": "\\b(bool|char|str)\\b"
+				},
+				{
+					"comment": "trait declarations",
+					"match": "\\b(trait)\\s+([A-Z][A-Za-z0-9]*)\\b",
+					"captures": {
+						"1": {
+							"name": "keyword.declaration.trait.lunescript storage.type.lunescript"
+						},
+						"2": {
+							"name": "entity.name.type.trait.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "struct declarations",
+					"match": "\\b(struct)\\s+([A-Z][A-Za-z0-9]*)\\b",
+					"captures": {
+						"1": {
+							"name": "keyword.declaration.struct.lunescript storage.type.lunescript"
+						},
+						"2": {
+							"name": "entity.name.type.struct.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "enum declarations",
+					"match": "\\b(enum)\\s+([A-Z][A-Za-z0-9_]*)\\b",
+					"captures": {
+						"1": {
+							"name": "keyword.declaration.enum.lunescript storage.type.lunescript"
+						},
+						"2": {
+							"name": "entity.name.type.enum.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "type declarations",
+					"match": "\\b(type)\\s+([A-Z][A-Za-z0-9_]*)\\b",
+					"captures": {
+						"1": {
+							"name": "keyword.declaration.type.lunescript storage.type.lunescript"
+						},
+						"2": {
+							"name": "entity.name.type.declaration.lunescript"
+						}
+					}
+				},
+				{
+					"comment": "types",
+					"name": "entity.name.type.lunescript",
+					"match": "\\b[A-Z][A-Za-z0-9]*\\b(?!!)"
+				}
+			]
+		},
+		"gtypes": {
+			"patterns": [
+				{
+					"comment": "option types",
+					"name": "entity.name.type.option.lunescript",
+					"match": "\\b(Some|None)\\b"
+				},
+				{
+					"comment": "result types",
+					"name": "entity.name.type.result.lunescript",
+					"match": "\\b(Ok|Err)\\b"
+				}
+			]
+		},
+		"punctuation": {
+			"patterns": [
+				{
+					"comment": "comma",
+					"name": "punctuation.comma.lunescript",
+					"match": ","
+				},
+				{
+					"comment": "curly braces",
+					"name": "punctuation.brackets.curly.lunescript",
+					"match": "[{}]"
+				},
+				{
+					"comment": "parentheses, round brackets",
+					"name": "punctuation.brackets.round.lunescript",
+					"match": "[()]"
+				},
+				{
+					"comment": "semicolon",
+					"name": "punctuation.semi.lunescript",
+					"match": ";"
+				},
+				{
+					"comment": "square brackets",
+					"name": "punctuation.brackets.square.lunescript",
+					"match": "[\\[\\]]"
+				},
+				{
+					"comment": "angle brackets",
+					"name": "punctuation.brackets.angle.lunescript",
+					"match": "(?<!=)[<>]"
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"comment": "double-quoted strings and byte strings",
+					"name": "string.quoted.double.lunescript",
+					"begin": "(b?)(\")",
+					"beginCaptures": {
+						"1": {
+							"name": "string.quoted.byte.raw.lunescript"
+						},
+						"2": {
+							"name": "punctuation.definition.string.lunescript"
+						}
+					},
+					"end": "\"",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.lunescript"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#escapes"
+						},
+						{
+							"include": "#interpolations"
+						}
+					]
+				},
+				{
+					"comment": "Raw string literals",
+					"begin": "```",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin"
+						}
+					},
+					"end": "```",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end"
+						}
+					}
+				},
+				{
+					"comment": "characters and bytes",
+					"name": "string.quoted.single.char.lunescript",
+					"begin": "(b)?(')",
+					"beginCaptures": {
+						"1": {
+							"name": "string.quoted.byte.raw.lunescript"
+						},
+						"2": {
+							"name": "punctuation.definition.char.lunescript"
+						}
+					},
+					"end": "'",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.char.lunescript"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#escapes"
+						}
+					]
+				},
+				{
+					"comment": "rune numerics of single quote",
+					"match": "\\?\\\\'",
+					"name": "constant.numeric.quote.single"
+				},
+				{
+					"comment": "rune numerics of double quote",
+					"match": "\\?\\\\\"",
+					"name": "constant.numeric.quote.double"
+				},
+				{
+					"comment": "rune numerics of any character",
+					"match": "\\?[^\\\\]",
+					"name": "constant.numeric.char"
+				}
+			]
+		},
+		"lvariables": {
+			"patterns": [
+				{
+					"comment": "self",
+					"name": "variable.language.self.lunescript",
+					"match": "\\b[Ss]elf\\b"
+				},
+				{
+					"comment": "super",
+					"name": "variable.language.super.lunescript",
+					"match": "\\bsuper\\b"
+				}
+			]
+		},
+		"variables": {
+			"patterns": [
+				{
+					"comment": "variables",
+					"name": "variable.other.lunescript",
+					"match": "\\b(?<!(?<!\\.)\\.)(?:r#(?!(crate|[Ss]elf|super)))?[a-z0-9_]+\\b"
+				}
+			]
+		}
+	}
+}

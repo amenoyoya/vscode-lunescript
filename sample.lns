@@ -128,6 +128,7 @@ alge Test {
     Val5( int, str ),
 }
 
+// 異なる引数の関数オーバーロードはサポートされていないため match 式で分岐する必要がある
 fn func( test: Test ) {
     match test {
         case .Val1 {
@@ -156,6 +157,22 @@ func( Test.Val2( 1 ) ); // Test.Val2 1
 func( Test.Val3( "abc" ) ); // Test.Val3 abc
 func( Test.Val4( new Hoge( 100 ) ) ); // Test.Val4  100
 func( Test.Val5( 10, "xyz" ) ); // Test.Val5 10 xyz
+
+/// Closure
+/// closure
+form formFunc( list: List<int> ): int;
+fn createSumFunc(): formFunc {
+    return fn (list: List<int>): int {
+        // let mut sum = 0; // shadowing-error: アクセス可能なスコープ内に同名の変数名は使えない
+        let mut localsum = 0;
+        foreach val in list {
+            localsum = localsum + val; // += operator は使えない
+        }
+        return localsum;
+    };
+}
+let sum: formFunc = createSumFunc();
+print(sum([1, 2, 3]));
 
 /// If
 let val = 1;
