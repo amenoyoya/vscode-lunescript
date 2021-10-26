@@ -91,7 +91,7 @@
 		},
 		{
 			"comment": "Call functions",
-			"match": "\\b(\\w+)\\b(?=\\()",
+			"match": "\\b(\\w+)\\s*(?=\\()",
 			"name": "support.function.builtin"
 		},
 		{

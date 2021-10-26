@@ -152,11 +152,11 @@ fn func( test: Test ) {
     }
 }
 
-func( Test.Val1 ); // Test.Val1
-func( Test.Val2( 1 ) ); // Test.Val2 1
-func( Test.Val3( "abc" ) ); // Test.Val3 abc
-func( Test.Val4( new Hoge( 100 ) ) ); // Test.Val4  100
-func( Test.Val5( 10, "xyz" ) ); // Test.Val5 10 xyz
+func ( Test.Val1 ); // Test.Val1
+func ( Test.Val2( 1 ) ); // Test.Val2 1
+func ( Test.Val3( "abc" ) ); // Test.Val3 abc
+func ( Test.Val4( new Hoge( 100 ) ) ); // Test.Val4  100
+func ( Test.Val5( 10, "xyz" ) ); // Test.Val5 10 xyz
 
 /// Closure
 /// closure
